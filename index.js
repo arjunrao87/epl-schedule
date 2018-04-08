@@ -13,7 +13,7 @@ const createTable = matches => {
     const t = new Table    
     matches.map( match => {
         moment.tz.setDefault("Europe/London");        
-        const newYork = moment(match.formatted_date + " " + match.time, BRITISH_DATE_FORMAT + " " + "HH:mm" ).tz( "America/New_York" );
+        const newYork = moment(`${match.formatted_date} ${match.time}`, `${BRITISH_DATE_FORMAT} HH:mm` ).tz( "America/New_York" );
         t.cell('Home Team', match.localteam_name)
         t.cell('Opponent', match.visitorteam_name)
         t.cell('Date', moment(match.formatted_date, BRITISH_DATE_FORMAT).format(AMERICAN_DATE_FORMAT));
