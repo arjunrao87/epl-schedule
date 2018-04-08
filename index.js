@@ -46,4 +46,11 @@ const fetchScheduleForTeamAndDuration = (teamID, startDate, endDate) => {
 
 //////////////////////////// MAIN /////////////////////////
 
+var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+var firstDay = new Date(y, m, 1);
+var lastDay = new Date(y, m + 1, 0);
+
+firstDay = moment(firstDay).format(BRITISH_DATE_FORMAT);
+lastDay = moment(lastDay).format(BRITISH_DATE_FORMAT);
+console.log( firstDay, lastDay );
 fetchScheduleForTeamAndDuration(args[0], args[1], args[2]);
