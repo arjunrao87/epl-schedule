@@ -10,7 +10,11 @@ const BASE_SLUG = `http://api.football-api.com/2.0/`;
 const args = process.argv.slice(2);
 
 const createTable = matches => {
-    const t = new Table    
+    if(!matches){
+        console.log("No matches found for team/duration!");
+        return;
+    }
+    const t = new Table        
     matches.map( match => {
         moment.tz.setDefault("Europe/London");        
         const newYork = moment(`${match.formatted_date} ${match.time}`, `${BRITISH_DATE_FORMAT} HH:mm` ).tz( "America/New_York" );
@@ -22,7 +26,6 @@ const createTable = matches => {
         t.cell('Day', moment(`${match.formatted_date}`, BRITISH_DATE_FORMAT).format('dddd'));        
         t.newRow()
     });
-
     console.log(t.toString())    
 }
 
@@ -32,6 +35,8 @@ const fetchResponse = url => {
         url: url,
     }).then(function (response) {
         createTable( response.data );
+    }).catch(error => {
+        console.log(error.response.data.message)
     });
 }
 
@@ -46,11 +51,21 @@ const fetchScheduleForTeamAndDuration = (teamID, startDate, endDate) => {
 
 //////////////////////////// MAIN /////////////////////////
 
-var date = new Date(), y = date.getFullYear(), m = date.getMonth();
-var firstDay = new Date(y, m, 1);
-var lastDay = new Date(y, m + 1, 0);
 
-firstDay = moment(firstDay).format(BRITISH_DATE_FORMAT);
-lastDay = moment(lastDay).format(BRITISH_DATE_FORMAT);
-console.log( firstDay, lastDay );
-fetchScheduleForTeamAndDuration(args[0], args[1], args[2]);
+if( args[0] && args[1] && args[2] ){
+    fetchScheduleForTeamAndDuration(args[0], args[1], args[2]);
+}
+else if( args[0] && args[1] && !args[2] ){
+    const date = new Date(), y = date.getFullYear(), m = date.getMonth();
+    const lastDay = moment(new Date(y, m + 1, 0)).format(GENERAL_DATE_FORMAT);
+    fetchScheduleForTeamAndDuration(args[0], args[1], lastDay);
+}
+else if( args[0] && !args[1] && !args[2] ){
+    const date = new Date(), y = date.getFullYear(), m = date.getMonth();
+    const firstDay = moment(new Date(y, m, 1)).format(GENERAL_DATE_FORMAT);
+    const lastDay = moment(new Date(y, m + 1, 0)).format(GENERAL_DATE_FORMAT);
+    fetchScheduleForTeamAndDuration(args[0], firstDay, lastDay);
+}
+else{
+    console.log( "Invalid Inputs! Check README for valid usage" );
+}

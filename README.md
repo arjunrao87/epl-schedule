@@ -15,12 +15,14 @@ Prints out the EPL schedule for the current month with some East Coast specific 
 node index.js <team-id> <schedule-start-date> <schedule-end-date>
 ```
 
-- For team-id, refer to team-ids.js
-- Start date and end date formats are DDMMMYYYY ( e.g. 23APR2018 ) 
+- For team-id, refer to team-ids.js ( MANDATORY parameter )
+- schedule-start-date format is DDMMMYYYY ( e.g. 23APR2018 ) ( OPTIONAL parameter. Defaults to start date of current month)
+- schedule-end-date format is DDMMMYYYY ( e.g. 25APR2018 ) ( OPTIONAL parameter. Defaults to end date of current month)
 
 e.g. 
 ```
-node index.js 9260 01APR2018 30APR2018
+node index.js 9260 01APR2018 30APR2018 
+node index.js 9260
 ```
 
 ## Note
