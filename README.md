@@ -23,6 +23,9 @@ e.g.
 node index.js 9260 01APR2018 30APR2018
 ```
 
+## Note
+This program uses an API given by ```https://football-api.com/```. If you wish to clone the project and work on it, make sure to set the env var OAUTH_KEY with the token provided by the API website.
+
 # Motivation 🏅
 
 Ever since I moved to the US, I have been unable to keep track of the English Premier League which is something I used to watch a lot back home. This is v1 of trying to keep me abreast of the EPL schedule for my team ( Manchester United ) ⚽️ 🥅
