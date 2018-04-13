@@ -1,3 +1,5 @@
+require('dotenv').config()
+const email = require('./email').email;
 const moment = require('moment-timezone');
 const axios = require('axios');
 const Table = require('easy-table')
@@ -9,7 +11,7 @@ const OAUTH_KEY = process.env.OAUTH_KEY;
 const BASE_SLUG = `http://api.football-api.com/2.0/`;
 const args = process.argv.slice(2);
 
-const createTable = matches => {
+const createTable = (matches,startDate,endDate) => {
     if(!matches){
         console.log("No matches found for team/duration!");
         return;
@@ -26,17 +28,20 @@ const createTable = matches => {
         t.cell('Day', moment(`${match.formatted_date}`, BRITISH_DATE_FORMAT).format('dddd'));        
         t.newRow()
     });
-    console.log(t.toString())    
+    console.log(t.toString());
+    if( process.env.EMAIL_ENABLED ){
+        email(t.toString(), `[${startDate} - ${endDate}]`);
+    }
 }
 
-const fetchResponse = url => {
+const fetchResponse = (url, startDate, endDate) => {
     axios({
         method: 'get',
         url: url,
     }).then(function (response) {
-        createTable( response.data );
+        createTable( response.data, startDate, endDate );
     }).catch(error => {
-        console.log(error.response.data.message)
+        throw error;
     });
 }
 
@@ -46,7 +51,7 @@ const fetchScheduleForTeamAndDuration = (teamID, startDate, endDate) => {
     const requestEndDate = moment(endDate, GENERAL_DATE_FORMAT).format(BRITISH_DATE_FORMAT);
     const matchScheduleAPI = `matches?team_id=${teamID}&from_date=${requestStartDate}&to_date=${requestEndDate}&Authorization=${OAUTH_KEY}`;
     const url = `${BASE_SLUG}${matchScheduleAPI}`;
-    fetchResponse(url);
+    fetchResponse(url, startDate, endDate);
 }
 
 //////////////////////////// MAIN /////////////////////////
