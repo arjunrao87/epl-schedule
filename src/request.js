@@ -1,4 +1,5 @@
 require('dotenv').config()
+
 const email = require('./email').email;
 const moment = require('moment-timezone');
 const axios = require('axios');
@@ -9,7 +10,6 @@ const AMERICAN_DATE_FORMAT = 'MM.DD.YYYY';
 const GENERAL_DATE_FORMAT = 'DDMMMYYYY';
 const OAUTH_KEY = process.env.OAUTH_KEY;
 const BASE_SLUG = `http://api.football-api.com/2.0/`;
-const args = process.argv.slice(2);
 
 const createTable = (matches,startDate,endDate) => {
     if(!matches){
@@ -28,49 +28,40 @@ const createTable = (matches,startDate,endDate) => {
         t.cell('Day', moment(`${match.formatted_date}`, BRITISH_DATE_FORMAT).format('dddd'));        
         t.newRow()
     });
-    console.log(t.toString());
+    const data = t.toString();
+    console.log(data);
     if( process.env.EMAIL_ENABLED ){
-        email(t.toString(), `[${startDate} - ${endDate}]`);
+        email(data, `[${startDate} - ${endDate}]`);
     }
+    return data;
 }
 
 const fetchResponse = (url, startDate, endDate) => {
-    axios({
+    return axios({
         method: 'get',
         url: url,
     }).then(function (response) {
-        createTable( response.data, startDate, endDate );
+        return createTable( response.data, startDate, endDate );
     }).catch(error => {
         throw error;
     });
 }
 
 const fetchScheduleForTeamAndDuration = (teamID, startDate, endDate) => {
-
     const requestStartDate = moment(startDate, GENERAL_DATE_FORMAT).format(BRITISH_DATE_FORMAT);
     const requestEndDate = moment(endDate, GENERAL_DATE_FORMAT).format(BRITISH_DATE_FORMAT);
     const matchScheduleAPI = `matches?team_id=${teamID}&from_date=${requestStartDate}&to_date=${requestEndDate}&Authorization=${OAUTH_KEY}`;
     const url = `${BASE_SLUG}${matchScheduleAPI}`;
-    fetchResponse(url, startDate, endDate);
+    return new Promise(function(resolve, reject) {
+        const data = fetchResponse(url, startDate, endDate)
+        .then(function (response) {
+            return resolve(response);
+        }).catch(error => {
+            reject(error);
+        });
+    })
 }
 
-//////////////////////////// MAIN /////////////////////////
-
-
-if( args[0] && args[1] && args[2] ){
-    fetchScheduleForTeamAndDuration(args[0], args[1], args[2]);
-}
-else if( args[0] && args[1] && !args[2] ){
-    const date = new Date(), y = date.getFullYear(), m = date.getMonth();
-    const lastDay = moment(new Date(y, m + 1, 0)).format(GENERAL_DATE_FORMAT);
-    fetchScheduleForTeamAndDuration(args[0], args[1], lastDay);
-}
-else if( args[0] && !args[1] && !args[2] ){
-    const date = new Date(), y = date.getFullYear(), m = date.getMonth();
-    const firstDay = moment(new Date(y, m, 1)).format(GENERAL_DATE_FORMAT);
-    const lastDay = moment(new Date(y, m + 1, 0)).format(GENERAL_DATE_FORMAT);
-    fetchScheduleForTeamAndDuration(args[0], firstDay, lastDay);
-}
-else{
-    console.log( "Invalid Inputs! Check README for valid usage" );
+module.exports = {
+    fetchScheduleForTeamAndDuration,
 }

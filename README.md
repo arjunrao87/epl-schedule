@@ -8,11 +8,24 @@ Prints out the EPL schedule for the current month with some East Coast specific 
 | Manchester United     | West Brom | 15.04.2018 |15:00|10:00| Sunday
 | Manchester United     | Arsenal      |    29.04.2018 |15:30|10:30| Sunday
 
-
 # Usage 
 
+## As Fastify server
+
+```bash
+node run prod
 ```
-node index.js <team-id> <schedule-start-date> <schedule-end-date>
+
+Server runs at :3000 and can be requested with a GET request 
+
+```
+http://localhost:3000/?team=9260&startDate=23APR2018&endDate=30APR2018
+```
+
+## As Node script
+
+```bash
+node run dev <team-id> <schedule-start-date> <schedule-end-date>
 ```
 
 - For team-id, refer to team-ids.js ( MANDATORY parameter )

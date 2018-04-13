@@ -1,4 +1,4 @@
-var Mailgun = require('mailgun-js');
+const Mailgun = require('mailgun-js');
 
 //Your api key, from Mailgun’s Control Panel
 const api_key = process.env.MAILGUN_API_KEY;
