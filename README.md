@@ -25,8 +25,26 @@ node index.js 9260 01APR2018 30APR2018
 node index.js 9260
 ```
 
+# Notifications
+
+## Email
+
+If the environment variable EMAIL_ENABLED=true then email notification with the schedule will be sent to the assigned email address. [Mailgun](https://www.mailgun.com/) is being used to send emails. A few other environment variables need to be set to enable the email functionality to work :
+
+```bash
+EMAIL_ENABLED=true
+FROM_EMAIL=<sender-email>
+TO_EMAIL=<recipient-email>
+EMAIL_DOMAIN=<mailgun-provided-email-domain>
+MAILGUN_API_KEY=<mailgun-key-after-signing-up-for-account>
+```
+
 ## Note
 This program uses an API given by ```https://football-api.com/```. If you wish to clone the project and work on it, make sure to set the env var OAUTH_KEY with the token provided by the API website.
+
+```bash
+OAUTH_KEY=<oauth-key-for-football-api>
+```
 
 # Motivation 🏅
 
