@@ -13,7 +13,7 @@ Prints out the EPL schedule for the current month with some East Coast specific 
 ## As Fastify server
 
 ```bash
-node run prod
+yarn run prod
 ```
 
 Server runs at :3000 and can be requested with a GET request 
@@ -25,7 +25,7 @@ http://localhost:3000/?team=9260&startDate=23APR2018&endDate=30APR2018
 ## As Node script
 
 ```bash
-node run dev <team-id> <schedule-start-date> <schedule-end-date>
+yarn run dev <team-id> <schedule-start-date> <schedule-end-date>
 ```
 
 - For team-id, refer to team-ids.js ( MANDATORY parameter )
@@ -34,8 +34,8 @@ node run dev <team-id> <schedule-start-date> <schedule-end-date>
 
 e.g. 
 ```
-node index.js 9260 01APR2018 30APR2018 
-node index.js 9260
+yarn run dev 9260 01APR2018 30APR2018 
+yarn run dev 9260
 ```
 
 # Notifications
