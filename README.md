@@ -59,6 +59,18 @@ This program uses an API given by ```https://football-api.com/```. If you wish t
 OAUTH_KEY=<oauth-key-for-football-api>
 ```
 
+## Building and Running Docker image
+
+### Build
+```
+docker build -t <user-id>/epl-schedule .
+```
+
+### Run
+```
+docker run -p 49161:3000 <user-id>/epl-schedule
+```
+
 # Motivation 🏅
 
 Ever since I moved to the US, I have been unable to keep track of the English Premier League which is something I used to watch a lot back home. This is v1 of trying to keep me abreast of the EPL schedule for my team ( Manchester United ) ⚽️ 🥅
