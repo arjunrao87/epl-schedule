@@ -59,14 +59,14 @@ This program uses an API given by ```https://football-api.com/```. If you wish t
 OAUTH_KEY=<oauth-key-for-football-api>
 ```
 
-## Building and Running Docker image
+# Building and Running Docker image
 
-### Build
+## Build
 ```
 docker build -t <user-id>/epl-schedule .
 ```
 
-### Run
+## Run
 ```
 docker run -p 49161:3000 <user-id>/epl-schedule
 ```
